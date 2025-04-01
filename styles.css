@@ -10,3 +10,13 @@ button {
     font-size: 14px;
     cursor: pointer;
 }
+
+
+p#cronometro {
+    font-size: 40px;
+    font-family: "Roboto Condensed";
+    font-weight: bold;
+    border: 2px solid #CECF07;
+    border-radius: 7px;
+}
+
