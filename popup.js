@@ -117,3 +117,21 @@ function atualizarTimer() {
         `${String(minutos).padStart(2, "0")}:${String(segundos).padStart(2, "0")}`;
     salvarEstado();
 }
+
+document.getElementById("start").addEventListener("click", () => {
+    chrome.runtime.sendMessage({ action: "start" });
+});
+
+document.getElementById("pause").addEventListener("click", () => {
+    chrome.runtime.sendMessage({ action: "pause" });
+});
+
+document.getElementById("reset").addEventListener("click", () => {
+    chrome.runtime.sendMessage({ action: "reset" });
+});
+
+chrome.runtime.onMessage.addListener((request) => {
+    if (request.action === "update") {
+        document.getElementById("timer").innerText = (request.time / 1000).toFixed(1);
+    }
+});

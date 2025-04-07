@@ -3,7 +3,7 @@
     "name": "Cronômetro e Timer",
     "version": "1.0",
     "description": "Extensão com cronômetro e timer",
-    "permissions": ["storage"],
+    "permissions": ["storage", "background", "alarms"],
     "background": {
       "service_worker": "background.js"
     },
