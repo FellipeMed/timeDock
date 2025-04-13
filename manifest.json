@@ -1,18 +1,14 @@
 {
-    "manifest_version": 3,
-    "name": "Cronômetro e Timer",
-    "version": "1.0",
-    "description": "Extensão com cronômetro e timer",
-    "permissions": ["storage", "background", "alarms"],
-    "background": {
-      "service_worker": "background.js"
-    },
-    "icons": {
-      "16": "icon.png",
-      "48": "icon.png",
-      "128": "icon.png"
-    },
-    "action": {
-      "default_title": "Abrir Cronômetro e Timer"
-    }
-  }
+  "manifest_version": 3,
+  "name": "Barra Cronômetro",
+  "version": "1.0",
+  "description": "Cronômetro ativado manualmente pelo usuário",
+  "action": {
+    "default_title": "Ativar Cronômetro"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": ["scripting", "activeTab"],
+  "host_permissions": ["<all_urls>"]
+}
