@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Configurações do Cronômetro</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Configurações</h1>
+  <label>
+    Tema:
+    <select id="tema">
+      <option value="claro">Claro</option>
+      <option value="escuro">Escuro</option>
+    </select>
+  </label>
+
+  <button id="salvar">Salvar</button>
+
+  <script>
+    const select = document.getElementById("tema");
+    const salvar = document.getElementById("salvar");
+
+    // Carrega tema salvo
+    const temaSalvo = localStorage.getItem("temaCronometro");
+    if (temaSalvo) select.value = temaSalvo;
+
+    salvar.onclick = () => {
+      localStorage.setItem("temaCronometro", select.value);
+      alert("Configuração salva!");
+    };
+  </script>
+</body>
+</html>

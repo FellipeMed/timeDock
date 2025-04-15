@@ -10,5 +10,6 @@
     "service_worker": "background.js"
   },
   "permissions": ["scripting", "activeTab"],
-  "host_permissions": ["<all_urls>"]
+  "host_permissions": ["<all_urls>"],
+  "options_page": "options.html"
 }
