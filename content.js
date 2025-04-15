@@ -16,11 +16,8 @@ function criarBarraCronometro() {
     const controles = document.createElement("div");
     controles.id = "cronometro-controles";
   
-    const btnStart = document.createElement("button");
-    btnStart.textContent = "Iniciar";
-  
-    const btnPause = document.createElement("button");
-    btnPause.textContent = "Pausar";
+    const btnPlayPause = document.createElement("button");
+    btnPlayPause.innerHTML = getPlayIcon();
   
     const btnReset = document.createElement("button");
     btnReset.innerHTML = `
@@ -28,15 +25,21 @@ function criarBarraCronometro() {
     `;
   
     const btnConfig = document.createElement("button");
-    btnConfig.innerHTML = `
-    
-<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="m234-480-12-60q-12-5-22.5-10.5T178-564l-58 18-40-68 46-40q-2-13-2-26t2-26l-46-40 40-68 58 18q11-8 21.5-13.5T222-820l12-60h80l12 60q12 5 22.5 10.5T370-796l58-18 40 68-46 40q2 13 2 26t-2 26l46 40-40 68-58-18q-11 8-21.5 13.5T326-540l-12 60h-80Zm40-120q33 0 56.5-23.5T354-680q0-33-23.5-56.5T274-760q-33 0-56.5 23.5T194-680q0 33 23.5 56.5T274-600ZM592-40l-18-84q-17-6-31.5-14.5T514-158l-80 26-56-96 64-56q-2-18-2-36t2-36l-64-56 56-96 80 26q14-11 28.5-19.5T574-516l18-84h112l18 84q17 6 31.5 14.5T782-482l80-26 56 96-64 56q2 18 2 36t-2 36l64 56-56 96-80-26q-14 11-28.5 19.5T722-124l-18 84H592Zm56-160q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35Z"/></svg>
-    `;
+    btnConfig.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
+    <path d="m234-480-12-60q-12-5-22.5-10.5T178-564l-58 18-40-68 46-40q-2-13-2-26t2-26l-46-40 40-68 58 18q11-8 21.5-13.5T222-820l12-60h80l12 60q12 5 22.5 10.5T370-796l58-18 40 68-46 40q2 13 2 26t-2 26l46 40-40 68-58-18q-11 8-21.5 13.5T326-540l-12 60h-80Zm40-120q33 0 56.5-23.5T354-680q0-33-23.5-56.5T274-760q-33 0-56.5 23.5T194-680q0 33 23.5 56.5T274-600ZM592-40l-18-84q-17-6-31.5-14.5T514-158l-80 26-56-96 64-56q-2-18-2-36t2-36l-64-56 56-96 80 26q14-11 28.5-19.5T574-516l18-84h112l18 84q17 6 31.5 14.5T782-482l80-26 56 96-64 56q2 18 2 36t-2 36l64 56-56 96-80-26q-14 11-28.5 19.5T722-124l-18 84H592Zm56-160q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35Z"/>
+    </svg>`;
+
+    const btnFechar = document.createElement("button");
+    btnFechar.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" fill="#e3e3e3">
+      <path d="M6 18L18 6M6 6l12 12" stroke="#e3e3e3" stroke-width="2" stroke-linecap="round"/>
+    </svg>`;
+
   
-    controles.appendChild(btnStart);
-    controles.appendChild(btnPause);
+    controles.appendChild(btnPlayPause);
     controles.appendChild(btnReset);
     controles.appendChild(btnConfig);
+    controles.appendChild(btnFechar);
   
     barra.appendChild(timer);
     barra.appendChild(controles);
@@ -46,7 +49,6 @@ function criarBarraCronometro() {
   
     let segundos = 0;
     let intervalo = null;
-    let visivel = true;
   
     function atualizarTempo() {
       const hrs = String(Math.floor(segundos / 3600)).padStart(2, '0');
@@ -55,18 +57,18 @@ function criarBarraCronometro() {
       timer.textContent = `${hrs}:${mins}:${secs}`;
     }
   
-    btnStart.onclick = () => {
+    btnPlayPause.onclick = () => {
       if (!intervalo) {
         intervalo = setInterval(() => {
           segundos++;
           atualizarTempo();
         }, 1000);
+        btnPlayPause.innerHTML = getPauseIcon(); // muda para ícone de pause
+      } else {
+        clearInterval(intervalo);
+        intervalo = null;
+        btnPlayPause.innerHTML = getPlayIcon(); // volta para ícone de play
       }
-    };
-  
-    btnPause.onclick = () => {
-      clearInterval(intervalo);
-      intervalo = null;
     };
   
     btnReset.onclick = () => {
@@ -77,12 +79,30 @@ function criarBarraCronometro() {
     };
   
     btnConfig.onclick = () => {
-        window.open("chrome-extension://pkelgfjialdkbomdkgmjkbfcieedjcko/options.html", "_blank");
+        window.open(chrome.runtime.getURL("options.html"), "_blank");
       };
-      
+
+    btnFechar.onclick = () => {
+        document.getElementById("cronometro-barra")?.remove();
+    };
       
   }
   
+  function getPlayIcon() {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
+      <path d="M320-200v-560l440 280-440 280Zm80-280Zm0 134 210-134-210-134v268Z"/>
+      </svg>`;
+  }
+  
+  function getPauseIcon() {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
+      <path d="M520-200v-560h240v560H520Zm-320 0v-560h240v560H200Zm400-80h80v-400h-80v400Zm-320 0h80v-400h-80v400Zm0-400v400-400Zm320 0v400-400Z"/>
+      </svg> `;
+  }
+
+
   function tornarArrastavel(el) {
     let isDragging = false;
     let offsetX, offsetY;
